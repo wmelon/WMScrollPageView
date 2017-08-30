@@ -25,9 +25,10 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
+                    一个自定义的分页导航视图控件
                    DESC
 
-  s.homepage     = "http://EXAMPLE/WMScrollPageView"
+  s.homepage     = "https://github.com/wmelon"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
