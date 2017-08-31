@@ -1,8 +1,8 @@
 //
 //  main.m
-//  WMScrollPageView
+//  WMDemo
 //
-//  Created by Sper on 2017/8/30.
+//  Created by Sper on 2017/8/31.
 //  Copyright © 2017年 WM. All rights reserved.
 //
 
