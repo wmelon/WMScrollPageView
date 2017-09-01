@@ -150,11 +150,10 @@
 
 }
 
+/// 切换主滚动视图和子滚动视图之间是否滚动
 - (void)changeMainTableViewAllowScroll:(BOOL)mainAllowScroll{
-    
     self.mainCanScroll = mainAllowScroll;
     self.contentCell.canScroll = !mainAllowScroll;
-
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -340,6 +339,7 @@
     [self.stretchableTableHeaderView resizeView];
 }
 
+#pragma mark -- Getter method
 /// 刷新数据
 - (void)reloadScrollPageView{
     [self setDataSource:_dataSource];

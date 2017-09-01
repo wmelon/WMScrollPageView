@@ -185,6 +185,14 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
     return contentSize;
 }
 
+/// 0.0 -- 1.0  或 -0.0 -- -1.0   数字越小越偏向高亮颜色   数值越大越偏向原本颜色
+- (UIColor *)gradientHighLightToNormal:(CGFloat)percent{
+    CGFloat r = self.defaultColors[0].floatValue + (1-ABS(percent))*(self.highLightColors[0].floatValue-self.defaultColors[0].floatValue);
+    CGFloat g = self.defaultColors[1].floatValue + (1-ABS(percent))*(self.highLightColors[1].floatValue-self.defaultColors[1].floatValue);
+    CGFloat b = self.defaultColors[2].floatValue + (1-ABS(percent))*(self.highLightColors[2].floatValue-self.defaultColors[2].floatValue);
+    return [UIColor colorWithRed:r green:g blue:b alpha:1];
+}
+
 - (NSArray *)setDefaultRGBColors:(UIColor *)color{
     
     NSMutableArray * array = [NSMutableArray array];
@@ -364,14 +372,6 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
         [self.scrollView setContentOffset:CGPointMake(offX, 0) animated:YES];
     }
     
-}
-
-/// 0.0 -- 1.0  或 -0.0 -- -1.0   数字越小越偏向高亮颜色   数值越大越偏向原本颜色
-- (UIColor *)gradientHighLightToNormal:(CGFloat)percent{
-    CGFloat r = self.defaultColors[0].floatValue + (1-ABS(percent))*(self.highLightColors[0].floatValue-self.defaultColors[0].floatValue);
-    CGFloat g = self.defaultColors[1].floatValue + (1-ABS(percent))*(self.highLightColors[1].floatValue-self.defaultColors[1].floatValue);
-    CGFloat b = self.defaultColors[2].floatValue + (1-ABS(percent))*(self.highLightColors[2].floatValue-self.defaultColors[2].floatValue);
-    return [UIColor colorWithRed:r green:g blue:b alpha:1];
 }
 
 #pragma mark -- 获取按钮显示的文案
