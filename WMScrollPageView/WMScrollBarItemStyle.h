@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger , wm_itemSizeStyle){
     wm_itemSizeStyle_equal_width,   /// 默认是切换项等宽

@@ -354,7 +354,7 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
     if (toIndex < self.itemsButtonArray.count){
      
         UIButton *toButton = self.itemsButtonArray[toIndex];
-        CGFloat offX = CGRectGetMidX(toButton.frame) - self.scrollView.size.width/2.0;
+        CGFloat offX = CGRectGetMidX(toButton.frame) - self.scrollView.frame.size.width/2.0;
         if (offX <= 0){
             offX = 0;
         }
