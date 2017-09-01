@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "WMScrollPageView"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.summary      = "这是一个分页导航视图控件"
 
   # This description is used to generate tags and improve search results.
