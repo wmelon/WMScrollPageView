@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		191BB6571F60FBA1000BF57F /* WMScrollPageView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 191BB6561F60FBA1000BF57F /* WMScrollPageView.podspec */; };
 		1951E9AB1F5FE81B00F41498 /* TestTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */; };
 		19A571851F580CB300B1C3B7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A571841F580CB300B1C3B7 /* main.m */; };
 		19A571881F580CB300B1C3B7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A571871F580CB300B1C3B7 /* AppDelegate.m */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		191BB6561F60FBA1000BF57F /* WMScrollPageView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WMScrollPageView.podspec; sourceTree = "<group>"; };
 		1951E9A91F5FE81B00F41498 /* TestTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestTableViewController.h; sourceTree = "<group>"; };
 		1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestTableViewController.m; sourceTree = "<group>"; };
 		19A571801F580CB300B1C3B7 /* WMDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,6 +64,7 @@
 		19A571771F580CB300B1C3B7 = {
 			isa = PBXGroup;
 			children = (
+				191BB6561F60FBA1000BF57F /* WMScrollPageView.podspec */,
 				19E336D81F595C55002FB2CF /* WMScrollPageView */,
 				19A571821F580CB300B1C3B7 /* WMDemo */,
 				19A571811F580CB300B1C3B7 /* Products */,
@@ -184,6 +187,7 @@
 				19A571931F580CB300B1C3B7 /* LaunchScreen.storyboard in Resources */,
 				19A571901F580CB300B1C3B7 /* Assets.xcassets in Resources */,
 				19A5718E1F580CB300B1C3B7 /* Main.storyboard in Resources */,
+				191BB6571F60FBA1000BF57F /* WMScrollPageView.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
