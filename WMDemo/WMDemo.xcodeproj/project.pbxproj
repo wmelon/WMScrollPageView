@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1951E9AB1F5FE81B00F41498 /* TestTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */; };
 		19A571851F580CB300B1C3B7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A571841F580CB300B1C3B7 /* main.m */; };
 		19A571881F580CB300B1C3B7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A571871F580CB300B1C3B7 /* AppDelegate.m */; };
 		19A5718B1F580CB300B1C3B7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A5718A1F580CB300B1C3B7 /* ViewController.m */; };
@@ -22,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1951E9A91F5FE81B00F41498 /* TestTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestTableViewController.h; sourceTree = "<group>"; };
+		1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestTableViewController.m; sourceTree = "<group>"; };
 		19A571801F580CB300B1C3B7 /* WMDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19A571841F580CB300B1C3B7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		19A571861F580CB300B1C3B7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -85,6 +88,8 @@
 				19A571911F580CB300B1C3B7 /* LaunchScreen.storyboard */,
 				19A571941F580CB300B1C3B7 /* Info.plist */,
 				19A571831F580CB300B1C3B7 /* Supporting Files */,
+				1951E9A91F5FE81B00F41498 /* TestTableViewController.h */,
+				1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */,
 			);
 			path = WMDemo;
 			sourceTree = "<group>";
@@ -147,6 +152,7 @@
 				TargetAttributes = {
 					19A5717F1F580CB300B1C3B7 = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = WZCA99V8R2;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -194,6 +200,7 @@
 				19A571881F580CB300B1C3B7 /* AppDelegate.m in Sources */,
 				19E336EA1F595C55002FB2CF /* WMScrollContentView.m in Sources */,
 				19A571851F580CB300B1C3B7 /* main.m in Sources */,
+				1951E9AB1F5FE81B00F41498 /* TestTableViewController.m in Sources */,
 				19E336E81F595C55002FB2CF /* WMScrollBarItem.m in Sources */,
 				19E336EB1F595C55002FB2CF /* WMScrollPageView.m in Sources */,
 			);
@@ -315,10 +322,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = WZCA99V8R2;
 				INFOPLIST_FILE = WMDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.watermelon.WMDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xigua.ins;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -326,10 +336,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = WZCA99V8R2;
 				INFOPLIST_FILE = WMDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.watermelon.WMDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xigua.ins;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
