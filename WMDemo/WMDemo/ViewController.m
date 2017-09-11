@@ -24,6 +24,16 @@
     
 
     [self.view addSubview:self.pageView];
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
+    [button addTarget:self action:@selector(playInputClick:) forControlEvents:UIControlEventTouchUpInside];
+    button.backgroundColor =[ UIColor redColor];
+    self.navigationItem.titleView = button;
+    
+}
+- (void)playInputClick:(UIButton *)button {
+    [_titles setArray:@[@"要闻",@"政务"]];
+    [self.pageView reloadScrollPageView];
 }
 #pragma mark - 监听屏幕旋转(new)
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
