@@ -165,9 +165,9 @@
                     
                     UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
                     if (cell){   /// 如果手势失败了之后不允许tableViewCell的高亮状态和选中状态
-                        
 //                        NSLog(@"第三层  %@" , cell);
-                        [tableView reloadData];
+                        [cell setHighlighted:NO];
+                        [cell setHighlighted:NO animated:YES];
                     }
                 }
             }

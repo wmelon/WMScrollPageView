@@ -11,7 +11,7 @@
 #import "WMScrollContentView.h"
 #import "WMStretchableTableHeaderView.h"
 
-
+#define kWMNavBarHeight ([UIScreen mainScreen].bounds.size.height == 812.0 ? 88 : 64)
 @interface WMManyGesturesTableView : UITableView
 
 @end
@@ -163,12 +163,12 @@
     
     //计算导航栏的透明度
     CGFloat minAlphaOffset = 0;
-    CGFloat maxAlphaOffset = self.tableViewHeaderViewHeight - 64;
+    CGFloat maxAlphaOffset = self.tableViewHeaderViewHeight - kWMNavBarHeight;
     CGFloat offset = scrollView.contentOffset.y;
     CGFloat alpha = (offset - minAlphaOffset) / (maxAlphaOffset - minAlphaOffset);
     
     //子控制器和主控制器之间的滑动状态切换
-    CGFloat tabOffsetY = [_tableView rectForSection:0].origin.y - 64;
+    CGFloat tabOffsetY = [_tableView rectForSection:0].origin.y - kWMNavBarHeight;
 
     //下拉放大 必须实现
     [self.stretchableTableHeaderView scrollViewDidScroll:scrollView];
@@ -212,7 +212,7 @@
     //要减去导航栏 状态栏 以及 sectionheader的高度
     CGFloat naviBarAndTabBArHeight = 0.0;
     if (self.style.isShowNavigationBar){
-        naviBarAndTabBArHeight = 64 - self.frame.origin.y;
+        naviBarAndTabBArHeight = kWMNavBarHeight - self.frame.origin.y;
     }
     CGFloat height = self.frame.size.height - naviBarAndTabBArHeight - self.style.segmentHeight;
     if (height <= 0){
@@ -385,7 +385,7 @@
     [super layoutSubviews];
     
     self.tableView.frame = self.bounds;
-    self.barItem.frame = CGRectMake(0, 0, self.frame.size.width, self.style.segmentHeight);
+    self.barItem.frame = CGRectMake(0, self.tableViewHeaderViewHeight, self.frame.size.width, self.style.segmentHeight);
 }
 /*
 // Only override drawRect: if you perform custom drawing.
