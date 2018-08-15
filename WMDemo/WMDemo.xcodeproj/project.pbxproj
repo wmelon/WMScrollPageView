@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		191BB65B1F60FD3D000BF57F /* WMScrollPageView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 191BB65A1F60FD3D000BF57F /* WMScrollPageView.podspec */; };
 		1951E9AB1F5FE81B00F41498 /* TestTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */; };
+		19A5232F2019B23700E9B516 /* NextPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A5232E2019B23700E9B516 /* NextPageViewController.m */; };
 		19A571851F580CB300B1C3B7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A571841F580CB300B1C3B7 /* main.m */; };
 		19A571881F580CB300B1C3B7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A571871F580CB300B1C3B7 /* AppDelegate.m */; };
 		19A5718B1F580CB300B1C3B7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A5718A1F580CB300B1C3B7 /* ViewController.m */; };
@@ -27,6 +28,8 @@
 		191BB65A1F60FD3D000BF57F /* WMScrollPageView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = WMScrollPageView.podspec; path = ../../WMScrollPageView.podspec; sourceTree = "<group>"; };
 		1951E9A91F5FE81B00F41498 /* TestTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestTableViewController.h; sourceTree = "<group>"; };
 		1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestTableViewController.m; sourceTree = "<group>"; };
+		19A5232D2019B23700E9B516 /* NextPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NextPageViewController.h; sourceTree = "<group>"; };
+		19A5232E2019B23700E9B516 /* NextPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NextPageViewController.m; sourceTree = "<group>"; };
 		19A571801F580CB300B1C3B7 /* WMDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WMDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19A571841F580CB300B1C3B7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		19A571861F580CB300B1C3B7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -93,6 +96,8 @@
 				19A571831F580CB300B1C3B7 /* Supporting Files */,
 				1951E9A91F5FE81B00F41498 /* TestTableViewController.h */,
 				1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */,
+				19A5232D2019B23700E9B516 /* NextPageViewController.h */,
+				19A5232E2019B23700E9B516 /* NextPageViewController.m */,
 			);
 			path = WMDemo;
 			sourceTree = "<group>";
@@ -204,6 +209,7 @@
 				19A571881F580CB300B1C3B7 /* AppDelegate.m in Sources */,
 				19E336EA1F595C55002FB2CF /* WMScrollContentView.m in Sources */,
 				19A571851F580CB300B1C3B7 /* main.m in Sources */,
+				19A5232F2019B23700E9B516 /* NextPageViewController.m in Sources */,
 				1951E9AB1F5FE81B00F41498 /* TestTableViewController.m in Sources */,
 				19E336E81F595C55002FB2CF /* WMScrollBarItem.m in Sources */,
 				19E336EB1F595C55002FB2CF /* WMScrollPageView.m in Sources */,

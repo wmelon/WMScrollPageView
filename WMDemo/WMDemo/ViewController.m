@@ -61,7 +61,11 @@
     vc.title = self.titles[index];
     return vc;
 }
-
+- (UIView *)headerViewInScrollPageView:(WMScrollPageView *)scrollPageView{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];
+    view.backgroundColor = [UIColor yellowColor];
+    return view;
+}
 - (void)plusButtonClickAtScrollPageView:(WMScrollPageView *)scrollPageView{
     //// 这里处理点击
     //    [CNJumper pushVcName:kClassName(CNNewsDetailViewController)];

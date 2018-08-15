@@ -12,7 +12,7 @@
 #import "WMStretchableTableHeaderView.h"
 
 #define kWMNavBarHeight ([UIScreen mainScreen].bounds.size.height == 812.0 ? 88 : 64)
-@interface WMManyGesturesTableView : UITableView
+@interface WMManyGesturesTableView : UITableView<UIGestureRecognizerDelegate>
 
 @end
 
@@ -20,6 +20,12 @@
 
 //允许同时识别多个手势
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    NSLog(@"%@  %@" , gestureRecognizer , otherGestureRecognizer);
+    return NO;
+}
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
+//    NSLog(@"touch.view   %@" , touch.view.subviews);
+//    NSLog(@"%@ " , touch.gestureRecognizers);
     return YES;
 }
 

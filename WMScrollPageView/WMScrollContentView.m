@@ -144,38 +144,38 @@
 #pragma mark -- UIGestureRecognizerDelegate 方法
 
 //// pageViewController 内部的 tableViewcell 长按高亮之后立即滑动pageView使的tableViewcell 手势失败 无法取消高亮的bug修复代码
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-//    NSLog(@"第一层走了");
-    if ([otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && ![otherGestureRecognizer.view isKindOfClass:[UITableView class]]){  /// 如果是滑动手势 并且是滑动pageviewcontroller 就需要取消长按手势
-        
-        if (_selectIndex < self.controlScrollViewArray.count){
-            
-            UIScrollView *scrollView = self.controlScrollViewArray[_selectIndex];
-            if ([scrollView isKindOfClass:[UITableView class]]){
-                
-//                NSLog(@"第二层走了");
-                
-                UITableView *tableView = (UITableView *)scrollView;
-                CGPoint point = [otherGestureRecognizer locationInView:tableView];
-                
-                NSIndexPath * indexPath = [tableView indexPathForRowAtPoint:point];
-                
-                if (indexPath){
-                    
-                    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-                    if (cell){   /// 如果手势失败了之后不允许tableViewCell的高亮状态和选中状态
-//                        NSLog(@"第三层  %@" , cell);
-                        [cell setHighlighted:NO];
-                        [cell setHighlighted:NO animated:YES];
-                    }
-                }
-            }
-        }
-
-    }
-    return YES;
-}
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+//{
+////    NSLog(@"第一层走了");
+//    if ([otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && ![otherGestureRecognizer.view isKindOfClass:[UITableView class]]){  /// 如果是滑动手势 并且是滑动pageviewcontroller 就需要取消长按手势
+//        
+//        if (_selectIndex < self.controlScrollViewArray.count){
+//            
+//            UIScrollView *scrollView = self.controlScrollViewArray[_selectIndex];
+//            if ([scrollView isKindOfClass:[UITableView class]]){
+//                
+////                NSLog(@"第二层走了");
+//                
+//                UITableView *tableView = (UITableView *)scrollView;
+//                CGPoint point = [otherGestureRecognizer locationInView:tableView];
+//                
+//                NSIndexPath * indexPath = [tableView indexPathForRowAtPoint:point];
+//                
+//                if (indexPath){
+//                    
+//                    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+//                    if (cell){   /// 如果手势失败了之后不允许tableViewCell的高亮状态和选中状态
+////                        NSLog(@"第三层  %@" , cell);
+//                        [cell setHighlighted:NO];
+//                        [cell setHighlighted:NO animated:YES];
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
+//    return YES;
+//}
 
 
 //监听拖拽手势的回调
