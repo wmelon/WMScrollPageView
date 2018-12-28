@@ -80,6 +80,7 @@ result = (edgeInsets.top > 20);\
         WMSegmentStyle * style = [WMSegmentStyle new];
         style.itemSizeStyle = wm_itemSizeStyle_equal_textSize;
         style.scaleTitle = YES;
+        style.changeTitleColor = YES;
         _scrollPageView = [[WMScrollPageView alloc] initWithSegmentStyle:style parentVC:self];
         _scrollPageView.dataSource = self;
         _scrollPageView.delegate = self;

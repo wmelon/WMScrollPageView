@@ -231,6 +231,9 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
     if (self.segmentStyle.isChangeTitleColor){
         [currentButton setTitleColor:[self gradientHighLightToNormal:wm_titleColorType_normal] forState:UIControlStateNormal];
         [toButton setTitleColor:[self gradientHighLightToNormal:wm_titleColorType_HighLight] forState:UIControlStateNormal];
+    } else {
+        [currentButton setTitleColor:[self wm_normalTitleColor] forState:UIControlStateNormal];
+        [toButton setTitleColor:[self wm_highLightTitleColor] forState:UIControlStateNormal];
     }
     if (self.segmentStyle.isScaleTitle){
         [UIView animateWithDuration:0.20 animations:^{
@@ -294,23 +297,34 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
 }
 /// 设置标题颜色渐变
 - (void)wm_changeTitleColorWithProgress:(CGFloat)progress{
-    if (self.segmentStyle.isChangeTitleColor == NO) return;
     NSInteger currentIndex = self.selectedSegmentIndex;
     NSArray<UIButton *> *buttonArray = self.itemsArray;
     UIButton * currentButton = buttonArray[currentIndex];
     NSInteger buttonCount = buttonArray.count;
     CGFloat tempProgress = progress - (int)progress;
     if (progress - (int)progress < fastPercent){  //半屏以前
-        [currentButton setTitleColor:[self gradientHighLightToNormal:tempProgress] forState:UIControlStateNormal];
+        UIButton *afterButton;
         if (currentIndex < buttonCount - 1){
-            UIButton *afterButton = buttonArray[currentIndex + 1];
+            afterButton = buttonArray[currentIndex + 1];
+        }
+        if (self.segmentStyle.isChangeTitleColor) {
+            [currentButton setTitleColor:[self gradientHighLightToNormal:tempProgress] forState:UIControlStateNormal];
             [afterButton setTitleColor:[self gradientHighLightToNormal:1 - tempProgress] forState:UIControlStateNormal];
+        } else {
+            [currentButton setTitleColor:[self wm_highLightTitleColor] forState:UIControlStateNormal];
+            [afterButton setTitleColor:[self wm_normalTitleColor] forState:UIControlStateNormal];
         }
     }else {   /// 半屏以后
-        [currentButton setTitleColor:[self gradientHighLightToNormal:1 - tempProgress] forState:UIControlStateNormal];
+        UIButton * frontButton;
         if (currentIndex > 0){
-            UIButton * frontButton = buttonArray[currentIndex - 1];
+            frontButton = buttonArray[currentIndex - 1];
+        }
+        if (self.segmentStyle.isChangeTitleColor) {
+            [currentButton setTitleColor:[self gradientHighLightToNormal:1 - tempProgress] forState:UIControlStateNormal];
             [frontButton setTitleColor:[self gradientHighLightToNormal:tempProgress] forState:UIControlStateNormal];
+        } else {
+            [currentButton setTitleColor:[self wm_highLightTitleColor] forState:UIControlStateNormal];
+            [frontButton setTitleColor:[self wm_normalTitleColor] forState:UIControlStateNormal];
         }
     }
 }
@@ -428,14 +442,14 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
 - (NSMutableArray<NSNumber *> *)defaultColors{
     if(_defaultColors == nil){
         _defaultColors = [NSMutableArray array];
-        [_defaultColors setArray:[self wm_setRGBColors:self.segmentStyle.normalTitleColor]];
+        [_defaultColors setArray:[self wm_setRGBColors:[self wm_normalTitleColor]]];
     }
     return _defaultColors;
 }
 - (NSMutableArray<NSNumber *> *)highLightColors{
     if (_highLightColors == nil){
         _highLightColors = [NSMutableArray array];
-        [_highLightColors setArray:[self wm_setRGBColors:self.segmentStyle.selectedTitleColor]];
+        [_highLightColors setArray:[self wm_setRGBColors:[self wm_highLightTitleColor]]];
     }
     return _highLightColors;
 }
