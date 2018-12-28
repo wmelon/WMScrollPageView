@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		191BB65B1F60FD3D000BF57F /* WMScrollPageView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 191BB65A1F60FD3D000BF57F /* WMScrollPageView.podspec */; };
+		1939B8AF21D600590025D163 /* WMScrollPageView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1939B8A421D600570025D163 /* WMScrollPageView.bundle */; };
+		1939B8B021D600590025D163 /* WMSegmentStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1939B8A521D600580025D163 /* WMSegmentStyle.m */; };
+		1939B8B121D600590025D163 /* WMContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1939B8A621D600580025D163 /* WMContentView.m */; };
+		1939B8B221D600590025D163 /* WMScrollPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1939B8AA21D600580025D163 /* WMScrollPageView.m */; };
+		1939B8B321D600590025D163 /* WMStretchableTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1939B8AC21D600590025D163 /* WMStretchableTableHeaderView.m */; };
+		1939B8B421D600590025D163 /* WMSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1939B8AE21D600590025D163 /* WMSegmentView.m */; };
 		1951E9AB1F5FE81B00F41498 /* TestTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */; };
 		19A5232F2019B23700E9B516 /* NextPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A5232E2019B23700E9B516 /* NextPageViewController.m */; };
 		19A571851F580CB300B1C3B7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 19A571841F580CB300B1C3B7 /* main.m */; };
@@ -16,16 +22,21 @@
 		19A5718E1F580CB300B1C3B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19A5718C1F580CB300B1C3B7 /* Main.storyboard */; };
 		19A571901F580CB300B1C3B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19A5718F1F580CB300B1C3B7 /* Assets.xcassets */; };
 		19A571931F580CB300B1C3B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19A571911F580CB300B1C3B7 /* LaunchScreen.storyboard */; };
-		19E336E81F595C55002FB2CF /* WMScrollBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E336DD1F595C55002FB2CF /* WMScrollBarItem.m */; };
-		19E336E91F595C55002FB2CF /* WMScrollBarItemStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E336DF1F595C55002FB2CF /* WMScrollBarItemStyle.m */; };
-		19E336EA1F595C55002FB2CF /* WMScrollContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E336E11F595C55002FB2CF /* WMScrollContentView.m */; };
-		19E336EB1F595C55002FB2CF /* WMScrollPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E336E31F595C55002FB2CF /* WMScrollPageView.m */; };
-		19E336EC1F595C55002FB2CF /* WMStretchableTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E336E51F595C55002FB2CF /* WMStretchableTableHeaderView.m */; };
-		19E781851F5EBC5C00605732 /* WMScrollPageView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 19E781841F5EBC5C00605732 /* WMScrollPageView.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		191BB65A1F60FD3D000BF57F /* WMScrollPageView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = WMScrollPageView.podspec; path = ../../WMScrollPageView.podspec; sourceTree = "<group>"; };
+		1939B8A421D600570025D163 /* WMScrollPageView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WMScrollPageView.bundle; sourceTree = "<group>"; };
+		1939B8A521D600580025D163 /* WMSegmentStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSegmentStyle.m; sourceTree = "<group>"; };
+		1939B8A621D600580025D163 /* WMContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMContentView.m; sourceTree = "<group>"; };
+		1939B8A721D600580025D163 /* WMSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSegmentView.h; sourceTree = "<group>"; };
+		1939B8A821D600580025D163 /* WMScrollPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMScrollPageView.h; sourceTree = "<group>"; };
+		1939B8A921D600580025D163 /* WMContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMContentView.h; sourceTree = "<group>"; };
+		1939B8AA21D600580025D163 /* WMScrollPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMScrollPageView.m; sourceTree = "<group>"; };
+		1939B8AB21D600580025D163 /* WMStretchableTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStretchableTableHeaderView.h; sourceTree = "<group>"; };
+		1939B8AC21D600590025D163 /* WMStretchableTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStretchableTableHeaderView.m; sourceTree = "<group>"; };
+		1939B8AD21D600590025D163 /* WMSegmentStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSegmentStyle.h; sourceTree = "<group>"; };
+		1939B8AE21D600590025D163 /* WMSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSegmentView.m; sourceTree = "<group>"; };
 		1951E9A91F5FE81B00F41498 /* TestTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestTableViewController.h; sourceTree = "<group>"; };
 		1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestTableViewController.m; sourceTree = "<group>"; };
 		19A5232D2019B23700E9B516 /* NextPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NextPageViewController.h; sourceTree = "<group>"; };
@@ -40,17 +51,6 @@
 		19A5718F1F580CB300B1C3B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		19A571921F580CB300B1C3B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		19A571941F580CB300B1C3B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		19E336DC1F595C55002FB2CF /* WMScrollBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMScrollBarItem.h; sourceTree = "<group>"; };
-		19E336DD1F595C55002FB2CF /* WMScrollBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMScrollBarItem.m; sourceTree = "<group>"; };
-		19E336DE1F595C55002FB2CF /* WMScrollBarItemStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMScrollBarItemStyle.h; sourceTree = "<group>"; };
-		19E336DF1F595C55002FB2CF /* WMScrollBarItemStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMScrollBarItemStyle.m; sourceTree = "<group>"; };
-		19E336E01F595C55002FB2CF /* WMScrollContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMScrollContentView.h; sourceTree = "<group>"; };
-		19E336E11F595C55002FB2CF /* WMScrollContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMScrollContentView.m; sourceTree = "<group>"; };
-		19E336E21F595C55002FB2CF /* WMScrollPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMScrollPageView.h; sourceTree = "<group>"; };
-		19E336E31F595C55002FB2CF /* WMScrollPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMScrollPageView.m; sourceTree = "<group>"; };
-		19E336E41F595C55002FB2CF /* WMStretchableTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMStretchableTableHeaderView.h; sourceTree = "<group>"; };
-		19E336E51F595C55002FB2CF /* WMStretchableTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMStretchableTableHeaderView.m; sourceTree = "<group>"; };
-		19E781841F5EBC5C00605732 /* WMScrollPageView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WMScrollPageView.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,17 +113,17 @@
 		19E336D81F595C55002FB2CF /* WMScrollPageView */ = {
 			isa = PBXGroup;
 			children = (
-				19E336DC1F595C55002FB2CF /* WMScrollBarItem.h */,
-				19E336DD1F595C55002FB2CF /* WMScrollBarItem.m */,
-				19E336DE1F595C55002FB2CF /* WMScrollBarItemStyle.h */,
-				19E336DF1F595C55002FB2CF /* WMScrollBarItemStyle.m */,
-				19E336E01F595C55002FB2CF /* WMScrollContentView.h */,
-				19E336E11F595C55002FB2CF /* WMScrollContentView.m */,
-				19E336E21F595C55002FB2CF /* WMScrollPageView.h */,
-				19E336E31F595C55002FB2CF /* WMScrollPageView.m */,
-				19E336E41F595C55002FB2CF /* WMStretchableTableHeaderView.h */,
-				19E336E51F595C55002FB2CF /* WMStretchableTableHeaderView.m */,
-				19E781841F5EBC5C00605732 /* WMScrollPageView.bundle */,
+				1939B8A421D600570025D163 /* WMScrollPageView.bundle */,
+				1939B8A921D600580025D163 /* WMContentView.h */,
+				1939B8A621D600580025D163 /* WMContentView.m */,
+				1939B8A821D600580025D163 /* WMScrollPageView.h */,
+				1939B8AA21D600580025D163 /* WMScrollPageView.m */,
+				1939B8AD21D600590025D163 /* WMSegmentStyle.h */,
+				1939B8A521D600580025D163 /* WMSegmentStyle.m */,
+				1939B8A721D600580025D163 /* WMSegmentView.h */,
+				1939B8AE21D600590025D163 /* WMSegmentView.m */,
+				1939B8AB21D600580025D163 /* WMStretchableTableHeaderView.h */,
+				1939B8AC21D600590025D163 /* WMStretchableTableHeaderView.m */,
 			);
 			name = WMScrollPageView;
 			path = ../WMScrollPageView;
@@ -188,7 +188,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19E781851F5EBC5C00605732 /* WMScrollPageView.bundle in Resources */,
+				1939B8AF21D600590025D163 /* WMScrollPageView.bundle in Resources */,
 				19A571931F580CB300B1C3B7 /* LaunchScreen.storyboard in Resources */,
 				19A571901F580CB300B1C3B7 /* Assets.xcassets in Resources */,
 				19A5718E1F580CB300B1C3B7 /* Main.storyboard in Resources */,
@@ -203,16 +203,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19E336E91F595C55002FB2CF /* WMScrollBarItemStyle.m in Sources */,
+				1939B8B421D600590025D163 /* WMSegmentView.m in Sources */,
+				1939B8B221D600590025D163 /* WMScrollPageView.m in Sources */,
 				19A5718B1F580CB300B1C3B7 /* ViewController.m in Sources */,
-				19E336EC1F595C55002FB2CF /* WMStretchableTableHeaderView.m in Sources */,
+				1939B8B321D600590025D163 /* WMStretchableTableHeaderView.m in Sources */,
 				19A571881F580CB300B1C3B7 /* AppDelegate.m in Sources */,
-				19E336EA1F595C55002FB2CF /* WMScrollContentView.m in Sources */,
+				1939B8B121D600590025D163 /* WMContentView.m in Sources */,
 				19A571851F580CB300B1C3B7 /* main.m in Sources */,
 				19A5232F2019B23700E9B516 /* NextPageViewController.m in Sources */,
 				1951E9AB1F5FE81B00F41498 /* TestTableViewController.m in Sources */,
-				19E336E81F595C55002FB2CF /* WMScrollBarItem.m in Sources */,
-				19E336EB1F595C55002FB2CF /* WMScrollPageView.m in Sources */,
+				1939B8B021D600590025D163 /* WMSegmentStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

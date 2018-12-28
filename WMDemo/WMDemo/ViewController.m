@@ -10,8 +10,22 @@
 #import "WMScrollPageView.h"
 #import "TestTableViewController.h"
 
+/// 判断是否刘海屏幕设备
+#define kIsIPhoneX \
+({\
+UIWindow *window = [UIApplication sharedApplication].windows[0];\
+BOOL result = NO;\
+if (@available(iOS 11.0, *)) {\
+UIEdgeInsets edgeInsets = window.safeAreaInsets;\
+result = (edgeInsets.top > 20);\
+}\
+(result);\
+})\
+
+#define kNavBarHeight (kIsIPhoneX ? 88 : 64)
+
 @interface ViewController ()<WMScrollPageViewDataSource,WMScrollPageViewDelegate>
-@property (nonatomic, strong) WMScrollPageView *pageView;
+@property (nonatomic, strong) WMScrollPageView *scrollPageView;
 @property (nonatomic, strong) NSMutableArray *titles;
 @end
 
@@ -23,76 +37,59 @@
     [_titles addObjectsFromArray:@[@"要闻",@"政务",@"时报",@"视频",@"直播",@"生活",@"社区",@"商圈",@"园区",@"图片",@"美丽长宁",@"专题",@"投稿"]];
     
 
-    [self.view addSubview:self.pageView];
+    [self.view addSubview:self.scrollPageView];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
     [button addTarget:self action:@selector(playInputClick:) forControlEvents:UIControlEventTouchUpInside];
-    button.backgroundColor =[ UIColor redColor];
+    button.backgroundColor = [UIColor redColor];
     self.navigationItem.titleView = button;
-    
 }
 - (void)playInputClick:(UIButton *)button {
     [_titles setArray:@[@"要闻",@"政务"]];
-    [self.pageView reloadScrollPageView];
+    [self.scrollPageView reloadScrollPageView];
 }
 #pragma mark - 监听屏幕旋转(new)
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     NSTimeInterval duration = [coordinator transitionDuration];
     [UIView animateWithDuration:duration animations:^{
-        self.pageView.frame = CGRectMake(0, 0, size.width, size.height);
+        self.scrollPageView.frame = CGRectMake(0, 0, size.width, size.height);
     }];
 }
-
-/// 滑动块有多少项  默认是 0
+#pragma mark -- WMScrollBarControlDataSource
 - (NSInteger)numberOfCountInScrollPageView:(WMScrollPageView *)scrollPageView{
     return self.titles.count;
 }
-
 /// 每一项显示的标题
-- (NSString *)scrollPageView:(WMScrollPageView *)scrollPageView titleForBarItemAtIndex:(NSInteger)index{
+- (NSString *)scrollPageView:(WMScrollPageView *)scrollPageView titleForSegmentAtIndex:(NSInteger)index{
     return self.titles[index];
 }
 
-
-/// 滑块下的每一项对应显示的控制器
-- (UIViewController *)scrollPageView:(WMScrollPageView *)scrollPageView controllerAtIndex:(NSInteger)index{
-    TestTableViewController *vc = TestTableViewController.new;
-    vc.title = self.titles[index];
+/// 每一项下面显示的视图控制器
+- (UIViewController *)scrollPageView:(WMScrollPageView *)scrollPageView viewControllerAtIndex:(NSInteger)index{
+    TestTableViewController * vc = [TestTableViewController new];
+    [vc setTitle:self.titles[index]];
     return vc;
-}
-- (UIView *)headerViewInScrollPageView:(WMScrollPageView *)scrollPageView{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];
-    view.backgroundColor = [UIColor yellowColor];
-    return view;
 }
 - (void)plusButtonClickAtScrollPageView:(WMScrollPageView *)scrollPageView{
     //// 这里处理点击
     //    [CNJumper pushVcName:kClassName(CNNewsDetailViewController)];
 }
-
-- (WMScrollBarItemStyle *)scrollBarItemStyleInScrollPageView:(WMScrollPageView *)scrollPageView{
-    WMScrollBarItemStyle *style = [WMScrollBarItemStyle new];
-    style.itemSizeStyle = wm_itemSizeStyle_equal_textSize;
-    style.scaleTitle = YES;
-    style.showExtraButton = YES;
-    style.showLine = YES;
-    style.selectedTitleColor = [UIColor redColor];
-    style.scrollLineColor = [UIColor redColor];
-    style.scrollLineHeight = 2.0;
-    return style;
-}
-
-- (WMScrollPageView *)pageView{
-    if (_pageView == nil){
-        _pageView = [[WMScrollPageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        _pageView.dataSource = self;
-        _pageView.delegate = self;
-        _pageView.backgroundColor = [UIColor redColor];
+- (WMScrollPageView *)scrollPageView{
+    if (_scrollPageView == nil){
+        WMSegmentStyle * style = [WMSegmentStyle new];
+        style.itemSizeStyle = wm_itemSizeStyle_equal_textSize;
+        style.scaleTitle = YES;
+        _scrollPageView = [[WMScrollPageView alloc] initWithSegmentStyle:style parentVC:self];
+        _scrollPageView.dataSource = self;
+        _scrollPageView.delegate = self;
     }
-    return _pageView;
+    return _scrollPageView;
 }
-
+- (void)viewWillLayoutSubviews{
+    [super viewWillLayoutSubviews];
+    self.scrollPageView.frame = CGRectMake(0, kNavBarHeight, self.view.frame.size.width, self.view.frame.size.height - kNavBarHeight);
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

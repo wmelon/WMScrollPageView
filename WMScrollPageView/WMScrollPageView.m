@@ -1,404 +1,310 @@
 //
 //  WMScrollPageView.m
-//  AllDemo
+//  WMScrollPageView
 //
-//  Created by Sper on 2017/7/28.
-//  Copyright © 2017年 WM. All rights reserved.
+//  Created by Sper on 2018/1/20.
+//  Copyright © 2018年 WM. All rights reserved.
 //
 
 #import "WMScrollPageView.h"
-#import "WMScrollBarItem.h"
-#import "WMScrollContentView.h"
+#import "WMContentView.h"
+#import "WMSegmentView.h"
 #import "WMStretchableTableHeaderView.h"
 
-#define kWMNavBarHeight ([UIScreen mainScreen].bounds.size.height == 812.0 ? 88 : 64)
 @interface WMManyGesturesTableView : UITableView<UIGestureRecognizerDelegate>
-
 @end
 
 @implementation WMManyGesturesTableView
-
 //允许同时识别多个手势
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    NSLog(@"%@  %@" , gestureRecognizer , otherGestureRecognizer);
-    return NO;
-}
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
-//    NSLog(@"touch.view   %@" , touch.view.subviews);
-//    NSLog(@"%@ " , touch.gestureRecognizers);
     return YES;
 }
-
 @end
 
-@interface WMScrollPageView()<WMScrollBarItemDelegate , UITableViewDataSource ,UITableViewDelegate , WMScrollContentViewDelegate>
-
-/// 导航条视图
-@property (nonatomic , strong) WMScrollBarItem * barItem;
-
-/// 当前容器滚动视图
-@property (nonatomic , strong) WMManyGesturesTableView * tableView;
-
-/// 内部分页cell
-@property (nonatomic , strong) WMScrollContentView * contentCell;
-
-/// 内部分页显示的控制器
-@property (nonatomic , strong) NSArray * viewControllers;
-
-/// 下拉放大视图
-@property (nonatomic , strong) WMStretchableTableHeaderView *stretchableTableHeaderView;
-
-/// 容器滚动视图是否可以滚动 默认是可以滚动的
-@property (nonatomic , assign) BOOL mainCanScroll;
-
+@interface WMScrollPageView()<UITableViewDataSource ,UITableViewDelegate ,WMContentViewDelegate ,UIScrollViewDelegate , WMSegmentViewDelegate>
+/// 导航视图样式
+@property (nonatomic ,strong) WMSegmentStyle *segmentStyle;
+/// 当前外层滚动视图
+@property (nonatomic ,strong) WMManyGesturesTableView *tableView;
+/// 分页导航视图
+@property (nonatomic ,strong) WMSegmentView *segmentView;
+/// 内部分页视图容器
+@property (nonatomic ,strong) WMContentView * contentView;
+/// 当前视图所在的控制器
+@property (nonatomic ,weak  ) UIViewController *parentVC;
 /// 头部视图的高度
-@property (nonatomic , assign) CGFloat tableViewHeaderViewHeight;
+@property (nonatomic ,assign) CGFloat tableViewHeaderViewHeight;
+/// 头部下拉放大视图
+@property (nonatomic ,strong) WMStretchableTableHeaderView *stretchableTableHeaderView;
+/// 容器滚动视图是否可以滚动 默认是可以滚动的
+@property (nonatomic ,assign) BOOL mainCanScroll;
 
-/// 所有视图的样式
-@property (nonatomic , strong) WMScrollBarItemStyle * style;
-
+/// 配置头部视图
+- (void)wm_configTableViewHeaderView;
+/// 配置主滚动视图和子滚动视图谁可以滚动
+- (void)wm_setMainScrollerViewAllowScroll:(BOOL)allowScroll;
+- (NSInteger)wm_numberOfPageCount;
+- (NSInteger)wm_defaultSelectedPage;
 @end
-
-
 @implementation WMScrollPageView
 
-- (void)setDataSource:(id<WMScrollPageViewDataSource>)dataSource{
-    _dataSource = dataSource;
-    
-    NSInteger barItemCount = 0;
-    if ([self.dataSource respondsToSelector:@selector(numberOfCountInScrollPageView:)]){
-        barItemCount = [self.dataSource numberOfCountInScrollPageView:self];
-    }
-    
-    /// 设置默认选中
-    [self wm_configDefaultSelectedWithBarItemCount:barItemCount];
-    
-    /// 创建显示视图
-    [self wm_creatShowControllersWithCount:barItemCount];
-    
-    /// 创建标题视图
-    [self wm_createScrollBarWithCount:barItemCount];
-    
-    /// 创建标题视图头部视图
-    [self wm_configTableViewHeaderView];
-}
-
-/// 配置默认选中 /// 初始化当前选中
-- (void)wm_configDefaultSelectedWithBarItemCount:(NSInteger)barItemCount{
-    _currentSelectedIndex = 0;
-    if ([self.dataSource respondsToSelector:@selector(defaultSelectedIndexAtScrollPageView:)]){
-        _currentSelectedIndex = [self.dataSource defaultSelectedIndexAtScrollPageView:self];
-        if (_currentSelectedIndex >= barItemCount){
-            _currentSelectedIndex = 0;
+- (instancetype)initWithSegmentStyle:(WMSegmentStyle *)segmentStyle parentVC:(UIViewController *)parentVC{
+    if (self = [super init]){
+        _segmentStyle = segmentStyle;
+        _parentVC = parentVC;
+        if (@available(iOS 11.0, *)) {
+            self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        } else {
+            _parentVC.automaticallyAdjustsScrollViewInsets = NO;
         }
     }
-    
+    return self;
 }
+- (void)reloadScrollPageView{
+    [self setDataSource:self.dataSource];
+    [self.segmentView wm_reloadSegmentView];
+}
+- (void)setDataSource:(id<WMScrollPageViewDataSource>)dataSource{
+    _dataSource = dataSource;
+    [self.tableView reloadData];
+}
+#pragma private method
 /// 配置头部视图
 - (void)wm_configTableViewHeaderView{
-
     UIView * headerView;
     if ([self.dataSource respondsToSelector:@selector(headerViewInScrollPageView:)]){
         headerView = [self.dataSource headerViewInScrollPageView:self];
     }
-    
     if (headerView){
-        self.tableViewHeaderViewHeight = CGRectGetHeight(headerView.frame);
-        
-        if (self.style.allowStretchableHeader){  /// 允许下拉放大
-            
+        if (self.segmentStyle.allowStretchableHeader){
+            /// 允许下拉放大
             [self.stretchableTableHeaderView stretchHeaderForTableView:self.tableView withView:headerView];
-            
-        }else {   /// 不允许下拉放大
-            
+        }else {
+            /// 不允许下拉放大
             self.tableView.tableHeaderView = headerView;
         }
-        
-        /// 设置初始化数据
-        [self changeMainTableViewAllowScroll:YES];
+        self.tableViewHeaderViewHeight = CGRectGetHeight(headerView.frame);
+        [self wm_setMainScrollerViewAllowScroll:YES];
     }else {
         self.tableView.scrollEnabled = NO;
-        /// 设置初始化数据
-        [self changeMainTableViewAllowScroll:NO];
+        [self wm_setMainScrollerViewAllowScroll:NO];
     }
 }
-- (void)wm_creatShowControllersWithCount:(NSInteger)count{
-    NSMutableArray * array = [NSMutableArray array];
-    for (int i = 0 ; i < count ; i++){
-        if ([self.dataSource respondsToSelector:@selector(scrollPageView:controllerAtIndex:)]){
-            
-            UIViewController * viewController = [self.dataSource scrollPageView:self controllerAtIndex:i];
-        
-            [array addObject:viewController];
-            
-        }
+- (NSInteger)wm_numberOfPageCount{
+    NSInteger count = 0;
+    if ([self.dataSource respondsToSelector:@selector(numberOfCountInScrollPageView:)]){
+        count = [self.dataSource numberOfCountInScrollPageView:self];
     }
-    self.viewControllers = array;
-    
-    /// 刷新
-    [self.tableView reloadData];
+    return count;
 }
-- (void)wm_createScrollBarWithCount:(NSInteger)count{
-    WMScrollBarItemStyle * style;
-    if ([self.dataSource respondsToSelector:@selector(scrollBarItemStyleInScrollPageView:)]){
-        style = [self.dataSource scrollBarItemStyleInScrollPageView:self];
+- (NSInteger)wm_defaultSelectedPage{
+    NSInteger index = 0;
+    if ([self.dataSource respondsToSelector:@selector(defaultSelectedIndexAtScrollPageView:)]){
+        index = [self.dataSource defaultSelectedIndexAtScrollPageView:self];
     }
-    if (style == nil){
-        style = [[WMScrollBarItemStyle alloc] init];
+    if (index >= [self wm_numberOfPageCount]){
+        index = 0;
     }
-
-    self.style = style;
-    
-    [self.barItem wm_configBarItemsWithCount:count currentIndex:_currentSelectedIndex barItemStyle:style];
-    
-    /// 刷新
-    [self.tableView reloadData];
-
+    return index;
 }
-
-/// 切换主滚动视图和子滚动视图之间是否滚动
-- (void)changeMainTableViewAllowScroll:(BOOL)mainAllowScroll{
-    self.mainCanScroll = mainAllowScroll;
-    self.contentCell.canScroll = !mainAllowScroll;
-}
-
-#pragma mark - UIScrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    if (self.tableView.scrollEnabled == NO) return;  /// 父滚动视图允许滚动的情况下才执行滚动计算
-    
-    //计算导航栏的透明度
-    CGFloat minAlphaOffset = 0;
-    CGFloat maxAlphaOffset = self.tableViewHeaderViewHeight - kWMNavBarHeight;
-    CGFloat offset = scrollView.contentOffset.y;
-    CGFloat alpha = (offset - minAlphaOffset) / (maxAlphaOffset - minAlphaOffset);
-    
-    //子控制器和主控制器之间的滑动状态切换
-    CGFloat tabOffsetY = [_tableView rectForSection:0].origin.y - kWMNavBarHeight;
-
-    //下拉放大 必须实现
-    [self.stretchableTableHeaderView scrollViewDidScroll:scrollView];
-    
-    if (offset >= tabOffsetY) {
-        if (_mainCanScroll) {
-            [self changeMainTableViewAllowScroll:NO];
-        }
-    }
-    
-    if (!_mainCanScroll){
-        scrollView.contentOffset = CGPointMake(0, tabOffsetY);
-        alpha = 1.0;  /// 防止不可以滚动的时候会出现透明度问题
-    }
-        
-    if ([self.delegate respondsToSelector:@selector(scrollPageView:navigationBarAlpha:)]){
-        [self.delegate scrollPageView:self navigationBarAlpha:alpha];
-    }
-    
-}
-
 #pragma mark -- UITableViewDelegate and UITableViewDataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
-}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    WMScrollContentView * cell = [WMScrollContentView cellForTableView:tableView showViewControllers:self.viewControllers];
-    self.contentCell = cell;
-    cell.delegate = self;
-    
-    /// 设置默认选中
-    [self setSelectedIndex:_currentSelectedIndex];
-    
-    return cell;
+    WMContentView * contentViewCell = [WMContentView cellForTableView:tableView delegate:self parentVC:self.parentVC];
+    self.contentView = contentViewCell;
+    [self wm_setMainScrollerViewAllowScroll:self.mainCanScroll];
+    return contentViewCell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     //要减去导航栏 状态栏 以及 sectionheader的高度
     CGFloat naviBarAndTabBArHeight = 0.0;
-    if (self.style.isShowNavigationBar){
-        naviBarAndTabBArHeight = kWMNavBarHeight - self.frame.origin.y;
+    if (self.segmentStyle.isShowNavigationBar){
+        naviBarAndTabBArHeight = [self getNavBarHeight] - self.frame.origin.y;
     }
-    CGFloat height = self.frame.size.height - naviBarAndTabBArHeight - self.style.segmentHeight;
+    CGFloat height = self.frame.size.height - naviBarAndTabBArHeight - self.segmentStyle.segmentHeight;
     if (height <= 0){
         height = 0;
     }
     return height;
 }
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    return self.barItem;
+    return self.segmentView;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     //sectionheader的高度，这是要放分段控件的
-    return self.style.segmentHeight;
+    return self.segmentStyle.segmentHeight;
 }
 
-
-#pragma mark -- WMScrollContentViewDelegate
-
-/// 分页控制器手势滑动控制当前滚动视图实付可以滚动
-- (void)scrollContentView:(WMScrollContentView *)scrollContentView pageControlScroll:(UIScrollView *)scrollView{
+#pragma mark -- control scrollerView scroll
+/// 配置主滚动视图和子滚动视图谁可以滚动
+- (void)wm_setMainScrollerViewAllowScroll:(BOOL)allowScroll{
+    self.mainCanScroll = allowScroll;
+    self.contentView.canScroll = !self.mainCanScroll;
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    /// 父滚动视图允许滚动的情况下才执行滚动计算
+    if (self.tableView.scrollEnabled == NO) return;
     
+    //计算导航栏的透明度
+    CGFloat minAlphaOffset = 0;
+    CGFloat maxAlphaOffset = self.tableViewHeaderViewHeight - [self getNavBarHeight];
+    CGFloat offset = scrollView.contentOffset.y;
+    CGFloat alpha = (offset - minAlphaOffset) / (maxAlphaOffset - minAlphaOffset);
+    //子控制器和主控制器之间的滑动状态切换
+    CGFloat tabOffsetY = [_tableView rectForSection:0].origin.y - [self getNavBarHeight] + self.frame.origin.y;
+    //下拉放大 必须实现
+    [self.stretchableTableHeaderView scrollViewDidScroll:scrollView];
+    if (offset >= tabOffsetY) {
+        if (self.mainCanScroll) {
+            [self wm_setMainScrollerViewAllowScroll:NO];
+        }
+    }
+    if (!self.mainCanScroll){
+        scrollView.contentOffset = CGPointMake(0, tabOffsetY);
+        alpha = 1.0;  /// 防止不可以滚动的时候会出现透明度问题
+    }
+    if ([self.delegate respondsToSelector:@selector(scrollPageView:navigationBarAlpha:)]){
+        [self.delegate scrollPageView:self navigationBarAlpha:alpha];
+    }
+}
+/// 分页控制器手势滑动控制当前滚动视图实付可以滚动
+- (void)contentView:(WMContentView *)contentView pageControlScroll:(UIScrollView *)scrollView{
     if (scrollView.panGestureRecognizer.state == UIGestureRecognizerStateChanged) {  /// 当滑动下面的PageView时，当前要禁止滑动
-
         if (self.tableViewHeaderViewHeight > 0){
             self.tableView.scrollEnabled = NO;
         }
-
     } else if (scrollView.panGestureRecognizer.state == UIGestureRecognizerStateEnded) {  /// bottomView停止滑动了  当前页可以滑动
-        
         if (self.tableViewHeaderViewHeight > 0){
             self.tableView.scrollEnabled = YES;
         }
     }
 }
-
 /// 控制器的滚动视图滚动
-
-- (void)scrollContentView:(WMScrollContentView *)scrollContentView controlScroll:(UIScrollView *)scrollView canScroll:(BOOL)canScroll{
-    
-    
-    if (self.tableView.scrollEnabled == NO) return;  /// 父滚动视图允许滚动才执行两个滚动视图的滚动切换
-    
-    _tableView.bounces = self.style.allowStretchableHeader;
-    
+- (void)contentView:(WMContentView *)contentView controlScroll:(UIScrollView *)scrollView canScroll:(BOOL)canScroll{
+    /// 父滚动视图允许滚动才执行两个滚动视图的滚动切换
+    if (self.tableView.scrollEnabled == NO) return;
+    /// 控制当前滚动视图是否使用弹簧效果
+    self.tableView.bounces = self.segmentStyle.allowStretchableHeader;
     CGFloat offsetY = scrollView.contentOffset.y;
-    
     if (offsetY < 0){
-        
         if (canScroll == YES){
             //子控制器到顶部了 主控制器可以滑动
-            [self changeMainTableViewAllowScroll:YES];
+            [self wm_setMainScrollerViewAllowScroll:YES];
         }
-        
     }
-    
-    if (_tableView.bounces){  /// 允许下拉放大头部
-        
+    if (self.tableView.bounces){  /// 允许下拉放大头部
         if (!canScroll && scrollView.contentOffset.y != 0) {
             [scrollView setContentOffset:CGPointZero];
         }
-        
-    
     } else {
-        
         if (!canScroll && scrollView.contentOffset.y != 0) {
-            if (_tableView.contentOffset.y > 0) {
+            if (self.tableView.contentOffset.y > 0) {
                 [scrollView setContentOffset:CGPointZero];
             }
         }
-        
     }
 }
-
-/// 处理pageView滚动进度
-- (void)scrollContentView:(WMScrollContentView *)scrollContentView adjustUIWithProgress:(CGFloat)progress currentIndex:(NSInteger)currentIndex{
-    
-    /// 处理barItem切换
-    [self.barItem adjustUIWithProgress:progress currentIndex:currentIndex];
- 
-    /// 更新当前选中的下标
-    _currentSelectedIndex = currentIndex;
+- (CGFloat)getNavBarHeight{
+    return [self isIphoneX] ? 88 : 64;
+}
+/// 判断是否刘海屏幕设备
+- (BOOL)isIphoneX{
+    UIWindow *window = [UIApplication sharedApplication].windows[0];
+    BOOL result = NO;
+    if (@available(iOS 11.0, *)) {
+        UIEdgeInsets edgeInsets = window.safeAreaInsets;
+        result = (edgeInsets.top > 20);
+    }
+    return result;
 }
 
-- (void)scrollContentView:(WMScrollContentView *)scrollContentView scrollAnimating:(BOOL)scrollAnimating{
-    
-    [self.barItem wm_scrollViewDidEndDecelerating];
-    
+#pragma mark -- WMSegmentViewDelegate
+- (NSInteger)numberOfCountAtSegmentView:(WMSegmentView *)segmentView{
+    return [self wm_numberOfPageCount];
 }
-
-#pragma mark -- WMScrollBarItemDelegate
-
-- (NSString *)barItem:(WMScrollBarItem *)barItem titleForItemAtIndex:(NSInteger)index{
-    NSString * title;
-    
-    if ([self.dataSource respondsToSelector:@selector(scrollPageView:titleForBarItemAtIndex:)]){
-        title = [self.dataSource scrollPageView:self titleForBarItemAtIndex:index];
+- (NSString *)segmentView:(WMSegmentView *)segmentView titleForItemAtIndex:(NSInteger)index{
+    NSString *title;
+    if ([self.dataSource respondsToSelector:@selector(scrollPageView:titleForSegmentAtIndex:)]){
+        title = [self.dataSource scrollPageView:self titleForSegmentAtIndex:index];
     }
     return title;
 }
-
+- (WMSegmentStyle *)segmentStyleAtSegmentView:(WMSegmentView *)segmentView{
+    return self.segmentStyle;
+}
+- (NSInteger)defaultSelectedIndexAtSegmentView:(WMSegmentView *)segmentView{
+    return [self wm_defaultSelectedPage];
+}
+- (void)segmentView:(WMSegmentView *)segmentView didSelectIndex:(NSInteger)index{
+    [self.contentView wm_changePageWithIndex:index];
+}
 /// 右边添加按钮点击事件
-- (void)plusButtonClickAtBarItem:(WMScrollBarItem *)barItem{
+- (void)plusButtonClickAtBarItem:(WMSegmentView *)segmentView{
     if ([self.delegate respondsToSelector:@selector(plusButtonClickAtScrollPageView:)]){
         [self.delegate plusButtonClickAtScrollPageView:self];
     }
 }
-/// 选择了barItem需要切换界面
-- (void)barItem:(WMScrollBarItem *)barItem didSelectIndex:(NSInteger)index{
-    /// 更新当前选中的下标
-    _currentSelectedIndex = index;
-    [self.contentCell setSelectIndex:index];
+
+#pragma mark -- WMContentViewDelegate
+- (NSInteger)numberOfCountInContentView:(WMContentView *)WMContentView{
+    return [self wm_numberOfPageCount];
 }
-
-#pragma mark -- public method
-/// 设置默认选中
-- (void)setSelectedIndex:(NSInteger)selectedIndex{
-    
-    [self.contentCell setSelectIndex:selectedIndex];
-    
-    [self.barItem scrollToIndex:selectedIndex currentIndex:0 animated:NO];
-}
-
-
-//下拉放大必须实现
-- (void)viewDidLayoutSubviews {
-    [self.stretchableTableHeaderView resizeView];
-}
-
-#pragma mark -- Getter method
-/// 刷新数据
-- (void)reloadScrollPageView{
-    [self setDataSource:_dataSource];
-}
-
-- (WMStretchableTableHeaderView *)stretchableTableHeaderView{
-    if (_stretchableTableHeaderView == nil){
-    
-        _stretchableTableHeaderView = [WMStretchableTableHeaderView new];
-        
+- (UIViewController *)contentView:(WMContentView *)contentView viewControllerAtIndex:(NSInteger)index{
+    UIViewController *viewController;
+    if ([self.dataSource respondsToSelector:@selector(scrollPageView:viewControllerAtIndex:)]){
+        viewController = [self.dataSource scrollPageView:self viewControllerAtIndex:index];
     }
-    return _stretchableTableHeaderView;
+    return viewController;
+}
+- (NSInteger)defaultSelectedIndexAtContentView:(WMContentView *)contentView{
+    return [self wm_defaultSelectedPage];
+}
+/// 分页控制器滚动进度监听
+- (void)contentView:(WMContentView *)contentView adjustUIWithProgress:(CGFloat)progress currentIndex:(NSInteger)currentIndex{
+    [self.segmentView adjustUIWithProgress:progress currentIndex:currentIndex];
+}
+/// 停止滚动
+- (void)stopScrollAnimatingAtContentView:(WMContentView *)contentView{
+    [self.segmentView wm_scrollViewDidEndDecelerating];
 }
 
-- (WMScrollBarItem *)barItem{
-    if (_barItem == nil){
-        
-        _barItem = [[WMScrollBarItem alloc] init];
-        
-        _barItem.delegate = self;
-    }
-    return _barItem;
-}
-
+#pragma mark -- getter and setter
 - (UITableView *)tableView{
-    
     if (_tableView == nil){
         _tableView = [[WMManyGesturesTableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
         _tableView.delegate= self;
         _tableView.dataSource= self;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [_tableView setShowsVerticalScrollIndicator:NO];
         [_tableView setShowsHorizontalScrollIndicator:NO];
         [self addSubview:_tableView];
     }
-    
     return _tableView;
 }
-
+- (WMSegmentView *)segmentView{
+    if (_segmentView == nil){
+        _segmentView = [[WMSegmentView alloc] init];
+        _segmentView.delegate = self;
+    }
+    return _segmentView;
+}
+- (WMStretchableTableHeaderView *)stretchableTableHeaderView{
+    if (_stretchableTableHeaderView == nil){
+        _stretchableTableHeaderView = [WMStretchableTableHeaderView new];
+    }
+    return _stretchableTableHeaderView;
+}
+// 头部视图下拉放大必须实现
+- (void)viewDidLayoutSubviews {
+    [self.stretchableTableHeaderView resizeView];
+}
 - (void)layoutSubviews{
     [super layoutSubviews];
-    
     self.tableView.frame = self.bounds;
-    self.barItem.frame = CGRectMake(0, self.tableViewHeaderViewHeight, self.frame.size.width, self.style.segmentHeight);
+    [self wm_configTableViewHeaderView];
+    self.segmentView.frame = CGRectMake(0, self.tableViewHeaderViewHeight, self.frame.size.width, self.segmentStyle.segmentHeight);
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 @end
