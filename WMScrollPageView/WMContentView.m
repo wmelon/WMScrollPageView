@@ -183,26 +183,20 @@
 /// 根据当前显示的控制器得到滚动视图
 - (void)wm_getScrollViewWithIndex:(NSInteger)index{
     if (index < self.showViewControllers.count){
-        __block UIScrollView *controlScrollView;
         UIViewController *viewControl = self.showViewControllers[index];
         if (viewControl.isViewLoaded){
             if ([viewControl.view isKindOfClass:[UIScrollView class]]){
-                controlScrollView = [self controlScrollViewAddScrollKVO:viewControl.view];
+                [self controlScrollViewAddScrollKVO:viewControl.view index:index];
             }else {
                 [viewControl.view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    controlScrollView = [self controlScrollViewAddScrollKVO:obj];
+                    [self controlScrollViewAddScrollKVO:obj index:index];
                 }];
-            }
-        }
-        if (controlScrollView){
-            if (index < self.controlScrollViewArray.count){  /// 更新
-                [self.controlScrollViewArray replaceObjectAtIndex:index withObject:controlScrollView];
             }
         }
     }
 }
 /// 获取控制器的滚动视图添加监听
-- (UIScrollView *)controlScrollViewAddScrollKVO:(UIView *)view{
+- (void)controlScrollViewAddScrollKVO:(UIView *)view index:(CGFloat)index{
     UIScrollView *scrollerView;
     if ([view isKindOfClass:[UIScrollView class]]){
         if (view.superview && ([view.superview isKindOfClass:[UITableView class]] || [view.superview isKindOfClass:[UICollectionView class]])){
@@ -210,11 +204,12 @@
         }else {
             scrollerView = (UIScrollView *)view;
         }
-        if (![self.controlScrollViewArray containsObject:scrollerView]){
-            [self addScrollViewKVO:scrollerView];
+        if (scrollerView){
+            if (index < self.controlScrollViewArray.count){  /// 更新
+                [self.controlScrollViewArray replaceObjectAtIndex:index withObject:scrollerView];
+            }
         }
     }
-    return scrollerView;
 }
 #pragma mark -- getter and setter
 - (UICollectionView *)collectionView{
