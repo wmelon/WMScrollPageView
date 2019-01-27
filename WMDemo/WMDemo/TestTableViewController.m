@@ -7,6 +7,7 @@
 //
 
 #import "TestTableViewController.h"
+#import "WMSegmentViewController.h"
 
 @interface TestTableViewController ()
 
@@ -55,6 +56,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSLog(@"点击了----- %ld  %@" , indexPath.row , self.title );
+    [self.navigationController pushViewController:[WMSegmentViewController new] animated:YES];
 }
 
 /*

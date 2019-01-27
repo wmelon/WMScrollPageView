@@ -22,6 +22,7 @@
 		19A5718E1F580CB300B1C3B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19A5718C1F580CB300B1C3B7 /* Main.storyboard */; };
 		19A571901F580CB300B1C3B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19A5718F1F580CB300B1C3B7 /* Assets.xcassets */; };
 		19A571931F580CB300B1C3B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19A571911F580CB300B1C3B7 /* LaunchScreen.storyboard */; };
+		19C9F0CB21FD8AFB005B4BA7 /* WMSegmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19C9F0CA21FD8AFB005B4BA7 /* WMSegmentViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,8 @@
 		19A5718F1F580CB300B1C3B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		19A571921F580CB300B1C3B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		19A571941F580CB300B1C3B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19C9F0C921FD8AFB005B4BA7 /* WMSegmentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMSegmentViewController.h; sourceTree = "<group>"; };
+		19C9F0CA21FD8AFB005B4BA7 /* WMSegmentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WMSegmentViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,8 @@
 				1951E9AA1F5FE81B00F41498 /* TestTableViewController.m */,
 				19A5232D2019B23700E9B516 /* NextPageViewController.h */,
 				19A5232E2019B23700E9B516 /* NextPageViewController.m */,
+				19C9F0C921FD8AFB005B4BA7 /* WMSegmentViewController.h */,
+				19C9F0CA21FD8AFB005B4BA7 /* WMSegmentViewController.m */,
 			);
 			path = WMDemo;
 			sourceTree = "<group>";
@@ -210,6 +215,7 @@
 				19A571881F580CB300B1C3B7 /* AppDelegate.m in Sources */,
 				1939B8B121D600590025D163 /* WMContentView.m in Sources */,
 				19A571851F580CB300B1C3B7 /* main.m in Sources */,
+				19C9F0CB21FD8AFB005B4BA7 /* WMSegmentViewController.m in Sources */,
 				19A5232F2019B23700E9B516 /* NextPageViewController.m in Sources */,
 				1951E9AB1F5FE81B00F41498 /* TestTableViewController.m in Sources */,
 				1939B8B021D600590025D163 /* WMSegmentStyle.m in Sources */,

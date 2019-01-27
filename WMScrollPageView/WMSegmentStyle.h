@@ -57,7 +57,14 @@ typedef NS_ENUM(NSInteger ,wm_scrollLineWidthStyle) {
 @property (strong, nonatomic) UIColor *bottomLineColor;
 /// 选择项宽度样式 默认是屏幕宽度平分
 @property (assign, nonatomic) wm_itemSizeStyle itemSizeStyle;
-
+/// 正常情况下背景颜色 默认是nil
+@property (nonatomic, strong) UIColor *normalBgColor;
+/// 选中状态下背景颜色  默认是nil
+@property (nonatomic, strong) UIColor *selectedBgColor;
+/// 边框颜色
+@property (nonatomic, strong) UIColor *borderColor;
+/// 边框圆角
+@property (nonatomic, assign) CGFloat borderRadius;
 #pragma mark -- 显示内容的样式
 /// 外面是否显示导航栏 默认是 YES
 @property (assign, nonatomic , getter=isShowNavigationBar) BOOL showNavigationBar;

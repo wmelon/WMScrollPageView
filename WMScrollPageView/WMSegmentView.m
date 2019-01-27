@@ -134,6 +134,7 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
         [button setTitle:title forState:UIControlStateNormal];
         [button setTitleColor:[self wm_normalTitleColor] forState:UIControlStateNormal];
         button.titleLabel.font = [self wm_titleFont];
+        [button setBackgroundColor:[self wm_normalBgColor]];
         [button addTarget:self action:@selector(wm_didSelectItemButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.itemsArray addObject:button];
         [self.scrollerView addSubview:button];
@@ -197,6 +198,18 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
 - (UIFont *)wm_titleFont{
     return self.segmentStyle.titleFont;
 }
+- (UIColor *)wm_normalBgColor{
+    return self.segmentStyle.normalBgColor;
+}
+- (UIColor *)wm_selectedBgColor{
+    return self.segmentStyle.selectedBgColor;
+}
+- (UIColor *)wm_borderColor{
+    return self.segmentStyle.borderColor;
+}
+- (CGFloat)wm_borderRadius{
+    return self.segmentStyle.borderRadius;
+}
 - (void)wm_configViewStyle{
     self.moveLine.hidden = !self.segmentStyle.isShowMoveLine;
     self.moveLine.backgroundColor = self.segmentStyle.scrollLineColor;
@@ -208,6 +221,9 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
     _selectedSegmentIndex = 0;
     if ([self.delegate respondsToSelector:@selector(defaultSelectedIndexAtSegmentView:)]){
         _selectedSegmentIndex = [self.delegate defaultSelectedIndexAtSegmentView:self];
+    }
+    if (_selectedSegmentIndex >= self.itemsArray.count){
+        _selectedSegmentIndex = 0;
     }
     /// 初始化切换标题
     [self wm_didSelectItemAtIndex:_selectedSegmentIndex];
@@ -235,6 +251,17 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
         [currentButton setTitleColor:[self wm_normalTitleColor] forState:UIControlStateNormal];
         [toButton setTitleColor:[self wm_highLightTitleColor] forState:UIControlStateNormal];
     }
+    [currentButton setBackgroundColor:[self wm_normalBgColor]];
+    currentButton.layer.cornerRadius = 0;
+    currentButton.layer.borderWidth = 0.0;
+    [toButton setBackgroundColor:[self wm_selectedBgColor]];
+    toButton.layer.cornerRadius = [self wm_borderRadius];
+    toButton.layer.masksToBounds = YES;
+    toButton.layer.borderColor = [self wm_borderColor].CGColor;
+    if (toButton.layer.borderColor){
+        toButton.layer.borderWidth = 0.5;
+    }
+    
     if (self.segmentStyle.isScaleTitle){
         [UIView animateWithDuration:0.20 animations:^{
             currentButton.transform =  CGAffineTransformMakeScale(1.0, 1.0);
@@ -518,16 +545,15 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
     }
     self.scrollerView.contentSize = CGSizeMake(maxContentWidth, 0);
     self.scrollerView.frame = self.bounds;
-
+    CGFloat bottomLineHeight = self.segmentStyle.bottomLineHeight;
+    self.bottomLine.frame = CGRectMake(0, selfHeight - bottomLineHeight, selfWidth, bottomLineHeight);
+    self.plusButton.frame = CGRectMake(selfWidth - selfHeight, 0, selfHeight, selfHeight - CGRectGetHeight(self.bottomLine.frame));
     /// 默认选中样式
     if (_selectedSegmentIndex < self.itemsArray.count){
         UIButton * button = self.itemsArray[_selectedSegmentIndex];
         CGFloat scrollLineWidth = [self wm_getScrollLineWidthWithIndex:_selectedSegmentIndex];
         CGFloat scrollLineheight = self.segmentStyle.scrollLineHeight;
-        CGFloat bottomLineHeight = self.segmentStyle.bottomLineHeight;
         self.moveLine.frame = CGRectMake(button.center.x -  scrollLineWidth / 2 , CGRectGetMaxY(self.scrollerView.frame) - scrollLineheight, scrollLineWidth , scrollLineheight);
-        self.bottomLine.frame = CGRectMake(0, selfHeight - bottomLineHeight, selfWidth, bottomLineHeight);
-        self.plusButton.frame = CGRectMake(selfWidth - selfHeight, 0, selfHeight, selfHeight - CGRectGetHeight(self.bottomLine.frame));
     }
 }
 
