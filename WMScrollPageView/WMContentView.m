@@ -9,11 +9,10 @@
 #import "WMContentView.h"
 
 @interface WMContentView()<UIGestureRecognizerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+/// 显示的子控制器数组
 @property (nonatomic , strong) NSArray *showViewControllers;
+/// 控制子控制器水平方向滚动视图
 @property (nonatomic , strong) UICollectionView *collectionView;
-@property (nonatomic , weak  ) UIViewController *parentVC;
-/// 显示控制器滚动视图
-@property (nonatomic , strong) NSMutableArray<UIScrollView *> *controlScrollViewArray;
 /// 当前选中页码
 @property (nonatomic , assign) NSInteger selectedIndex;
 /// 是否正在翻页
@@ -21,14 +20,13 @@
 @end
 
 @implementation WMContentView
-+ (instancetype)cellForTableView:(UITableView *)tableView delegate:(id<WMContentViewDelegate>)delegate parentVC:(UIViewController *)parentVC{
++ (instancetype)cellForTableView:(UITableView *)tableView delegate:(id<WMContentViewDelegate>)delegate {
     WMContentView * cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([WMContentView class])];
     if (cell == nil){
         cell = [[WMContentView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([WMContentView class])];
         [cell setSelectionStyle:(UITableViewCellSelectionStyleNone)];
         [cell.contentView addSubview:cell.collectionView];
     }
-    cell.parentVC = parentVC;
     cell.delegate = delegate;
     return cell;
 }
@@ -46,9 +44,6 @@
             [obj removeFromParentViewController];
         }
     }];
-    /// 移除滚动视图的kvo监听
-    [self removeScrollViewKVO];
-    [self.controlScrollViewArray removeAllObjects];
     self.showViewControllers = nil;
 }
 - (void)wm_addNewViewAndData{
@@ -64,8 +59,6 @@
         }
         if (vc && [vc isKindOfClass:[UIViewController class]]){
             [controllersArray addObject:vc];
-            [self.parentVC addChildViewController:(UIViewController *)vc];
-            [self.controlScrollViewArray addObject:[UIScrollView new]];
         }
     }
     self.showViewControllers = controllersArray;
@@ -117,38 +110,14 @@
         viewController.view.frame = cell.contentView.bounds;
         [cell.contentView addSubview:viewController.view];
         [self wm_getScrollViewWithIndex:indexPath.row];
-        [self setCanScroll:self.canScroll];
+//        [self setCanScroll:self.canScroll];
     }
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     return self.frame.size;
 }
 
-- (void)setCanScroll:(BOOL)canScroll{
-    _canScroll = canScroll;
-    //修改所有的子控制器的滚动视图的状态
-    [self.controlScrollViewArray enumerateObjectsUsingBlock:^(UIScrollView * _Nonnull scrollerView, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (!canScroll){
-            scrollerView.contentOffset = CGPointZero;
-        }
-    }];
-}
-
 #pragma mark -- 滚动监听相关
-- (void)addScrollViewKVO:(UIScrollView *)scrollerView{
-    [scrollerView addObserver:self forKeyPath:@"contentOffset"
-                      options:NSKeyValueObservingOptionNew
-                      context:nil];
-}
-- (void)removeScrollViewKVO{
-    [self.controlScrollViewArray enumerateObjectsUsingBlock:^(UIScrollView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        @try {
-            [obj removeObserver:self forKeyPath:@"contentOffset"];
-        }@catch (NSException *exception) {
-            NSLog(@"多次删除了");
-        }
-    }];
-}
 - (void)addCollectionViewKVO{
     [self.collectionView addObserver:self
                           forKeyPath:@"panGestureRecognizer.state"
@@ -159,7 +128,7 @@
     @try {
         [self.collectionView removeObserver:self forKeyPath:@"panGestureRecognizer.state"];
     }@catch (NSException *exception) {
-        NSLog(@"多次删除了");
+        NSLog(@"collectionView多次删除了");
     }
 }
 
@@ -168,11 +137,7 @@
                       ofObject:(id)object
                         change:(NSDictionary<NSKeyValueChangeKey,id> *)change
                        context:(void *)context {
-    if ([keyPath isEqualToString:@"contentOffset"]){   //// 监听tableView滚动
-        if ([self.delegate respondsToSelector:@selector(contentView:controlScroll:canScroll:)]){
-            [self.delegate contentView:self controlScroll:object canScroll:self.canScroll];
-        }
-    }else if ([keyPath isEqualToString:@"panGestureRecognizer.state"]){
+    if ([keyPath isEqualToString:@"panGestureRecognizer.state"]){
         if ([self.delegate respondsToSelector:@selector(contentView:pageControlScroll:)]){
             [self.delegate contentView:self pageControlScroll:object];
         }
@@ -205,8 +170,9 @@
             scrollerView = (UIScrollView *)view;
         }
         if (scrollerView){
-            if (index < self.controlScrollViewArray.count){  /// 更新
-                [self.controlScrollViewArray replaceObjectAtIndex:index withObject:scrollerView];
+            /// 当前控制器的滚动视图
+            if ([self.delegate respondsToSelector:@selector(contentView:controllerScrollView:)]) {
+                [self.delegate contentView:self controllerScrollView:scrollerView];
             }
         }
     }
@@ -231,12 +197,6 @@
     }
     return _collectionView;
 }
-- (NSMutableArray<UIScrollView *> *)controlScrollViewArray{
-    if (_controlScrollViewArray == nil){
-        _controlScrollViewArray = [NSMutableArray array];
-    }
-    return _controlScrollViewArray;
-}
 - (void)layoutSubviews{
     [super layoutSubviews];
     self.collectionView.frame = self.bounds;
@@ -248,8 +208,8 @@
     [self wm_changePageWithIndex:index];
 }
 - (void)dealloc {
+    NSLog(@"dealloc ---- %@",self);
     //清除监听
     [self removeCollectionViewKVO];
-    [self removeScrollViewKVO];
 }
 @end

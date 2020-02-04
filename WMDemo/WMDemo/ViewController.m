@@ -27,6 +27,7 @@ result = (edgeInsets.top > 20);\
 @interface ViewController ()<WMScrollPageViewDataSource,WMScrollPageViewDelegate>
 @property (nonatomic, strong) WMScrollPageView *scrollPageView;
 @property (nonatomic, strong) NSMutableArray *titles;
+@property (nonatomic, strong) UIView *headerView;
 @end
 
 @implementation ViewController
@@ -71,6 +72,9 @@ result = (edgeInsets.top > 20);\
     [vc setTitle:self.titles[index]];
     return vc;
 }
+- (UIView *)headerViewInScrollPageView:(WMScrollPageView *)scrollPageView {
+    return self.headerView;
+}
 - (void)plusButtonClickAtScrollPageView:(WMScrollPageView *)scrollPageView{
     //// 这里处理点击
     //    [CNJumper pushVcName:kClassName(CNNewsDetailViewController)];
@@ -87,6 +91,14 @@ result = (edgeInsets.top > 20);\
     }
     return _scrollPageView;
 }
+- (UIView *)headerView {
+    if (_headerView == nil) {
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 300)];
+        _headerView.backgroundColor = [UIColor redColor];
+    }
+    return _headerView;
+}
+
 - (void)viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
     self.scrollPageView.frame = CGRectMake(0, kNavBarHeight, self.view.frame.size.width, self.view.frame.size.height - kNavBarHeight);

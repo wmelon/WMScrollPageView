@@ -23,8 +23,8 @@
 /// 默认选中
 - (NSInteger)defaultSelectedIndexAtContentView:(WMContentView *)contentView;
 
-/// 控制器的滚动视图滚动
-- (void)contentView:(WMContentView *)contentView controlScroll:(UIScrollView *)scrollView canScroll:(BOOL)canScroll;
+/// 控制器的滚动视图
+- (void)contentView:(WMContentView *)contentView controllerScrollView:(UIScrollView *)scrollView;
 
 /// 分页控制器的滚动视图滚动
 - (void)contentView:(WMContentView *)contentView pageControlScroll:(UIScrollView *)scrollView;
@@ -37,10 +37,10 @@
 @end
 
 @interface WMContentView : UITableViewCell
+/// 代理对象
 @property (nonatomic , weak  ) id<WMContentViewDelegate> delegate;
-/// 是否允许滚动
-@property (nonatomic , assign) BOOL canScroll;
-+ (instancetype)cellForTableView:(UITableView *)tableView delegate:(id<WMContentViewDelegate>)delegate parentVC:(UIViewController *)parentVC;
+/// 当前视图显示在外层视图cell上
++ (instancetype)cellForTableView:(UITableView *)tableView delegate:(id<WMContentViewDelegate>)delegate;
 /// 切换页面
 - (void)wm_changePageWithIndex:(NSInteger)index;
 @end
