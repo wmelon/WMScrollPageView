@@ -79,7 +79,6 @@
 }
 - (void)setDataSource:(id<WMScrollPageViewDataSource>)dataSource{
     _dataSource = dataSource;
-    [self wm_configTableViewHeaderView];
     [self.tableView reloadData];
 }
 #pragma private method
@@ -97,6 +96,7 @@
             /// 不允许下拉放大
             self.tableView.tableHeaderView = headerView;
         }
+        self.tableViewHeaderViewHeight = CGRectGetHeight(headerView.frame);
         [self wm_setMainScrollerViewAllowScroll:YES];
     }else {
         self.tableView.scrollEnabled = NO;
@@ -347,7 +347,7 @@
 - (void)layoutSubviews{
     [super layoutSubviews];
     self.tableView.frame = self.bounds;
-    self.tableViewHeaderViewHeight = CGRectGetHeight(self.tableView.tableHeaderView.frame);
+    [self wm_configTableViewHeaderView];
     self.segmentView.frame = CGRectMake(0, self.tableViewHeaderViewHeight, self.frame.size.width, self.segmentStyle.segmentHeight);
 }
 - (void)dealloc {
