@@ -340,6 +340,9 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
         } else {
             [currentButton setTitleColor:[self wm_highLightTitleColor] forState:UIControlStateNormal];
             [afterButton setTitleColor:[self wm_normalTitleColor] forState:UIControlStateNormal];
+            
+            [currentButton setBackgroundColor:[self wm_selectedBgColor]];
+            [afterButton setBackgroundColor:[self wm_normalBgColor]];
         }
     }else {   /// 半屏以后
         UIButton * frontButton;
@@ -352,6 +355,9 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
         } else {
             [currentButton setTitleColor:[self wm_highLightTitleColor] forState:UIControlStateNormal];
             [frontButton setTitleColor:[self wm_normalTitleColor] forState:UIControlStateNormal];
+            
+            [currentButton setBackgroundColor:[self wm_selectedBgColor]];
+            [frontButton setBackgroundColor:[self wm_normalBgColor]];
         }
     }
 }

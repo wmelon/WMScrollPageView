@@ -19,8 +19,9 @@ typedef NS_ENUM(NSInteger ,wm_scrollLineWidthStyle) {
 };
 
 @interface WMSegmentStyle : NSObject
+/// 是否自定义导航控件显示父控件 ， 默认是 NO
+@property (nonatomic, assign) BOOL customSegmentSuperView;
 #pragma mark -- 显示标题的样式
-
 /** 是否显示滚动条 默认为YES*/
 @property (assign, nonatomic, getter=isShowMoveLine) BOOL showMoveLine;
 /** 是否缩放标题 默认为NO*/

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface TestTableViewController : UITableViewController
-
+@property (nonatomic, assign) NSInteger index;
 @end

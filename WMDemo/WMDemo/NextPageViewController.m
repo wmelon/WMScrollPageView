@@ -8,6 +8,7 @@
 
 #import "NextPageViewController.h"
 #import "ViewController.h"
+#import "WMSegmentViewController.h"
 
 @interface NextPageViewController ()
 
@@ -16,6 +17,9 @@
 @implementation NextPageViewController
 - (IBAction)nextPage:(id)sender {
     [self.navigationController pushViewController:[ViewController new] animated:YES];
+}
+- (IBAction)goPage:(id)sender {
+    [self.navigationController pushViewController:[WMSegmentViewController new] animated:YES];
 }
 
 - (void)viewDidLoad {

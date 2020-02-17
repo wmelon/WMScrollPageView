@@ -7,9 +7,11 @@
 //
 
 #import "WMSegmentViewController.h"
-#import "WMSegmentView.h"
+#import "WMScrollPageView.h"
+#import "TestTableViewController.h"
 
-@interface WMSegmentViewController ()<WMSegmentViewDelegate>
+@interface WMSegmentViewController ()<WMScrollPageViewDataSource,WMScrollPageViewDelegate>
+@property (nonatomic, strong) WMScrollPageView *pageView;
 @property (nonatomic, strong) WMSegmentView *segmentView;
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, strong) WMSegmentStyle *style;
@@ -21,65 +23,66 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.pageView];
+    
+    self.segmentView = self.pageView.segmentView;
+    self.segmentView.layer.borderWidth = 1.0;
+    self.segmentView.layer.cornerRadius = 10;
+    self.segmentView.layer.masksToBounds = YES;
+    self.segmentView.layer.borderColor = [UIColor blackColor].CGColor;
+    self.segmentView.backgroundColor = [UIColor clearColor];
     self.navigationItem.titleView = self.segmentView;
 }
-#pragma mark -- WMSegmentViewDelegate
-/// 一共多少个切换标题
-- (NSInteger)numberOfCountAtSegmentView:(WMSegmentView *)segmentView{
+
+/// 滑动块有多少项  默认是 0
+- (NSInteger)numberOfCountInScrollPageView:(WMScrollPageView *)scrollPageView {
     return self.titles.count;
 }
 
-/// 标题按钮显示的文案
-- (NSString *)segmentView:(WMSegmentView *)segmentView titleForItemAtIndex:(NSInteger)index{
+/// 每一项显示的标题
+- (NSString *)scrollPageView:(WMScrollPageView *)scrollPageView titleForSegmentAtIndex:(NSInteger)index {
     return self.titles[index];
 }
 
-/// 控件样式
-- (WMSegmentStyle *)segmentStyleAtSegmentView:(WMSegmentView *)segmentView{
-    return self.style;
+/// 每一项下面显示的视图控制器
+- (UIViewController *)scrollPageView:(WMScrollPageView *)scrollPageView viewControllerAtIndex:(NSInteger)index {
+    TestTableViewController *vc = [TestTableViewController new];
+    vc.index = index;
+    return  vc;
 }
 
-/// 标题按钮点击事件
-- (void)segmentView:(WMSegmentView *)segmentView didSelectIndex:(NSInteger)index{
-    
-}
-/// 默认选中标题
-- (NSInteger)defaultSelectedIndexAtSegmentView:(WMSegmentView *)segmentView{
-    return 2;
-}
-
-//- (void)segmentView:(HKSegmentView *)segmentView didSelectIndex:(NSInteger)index{
-//
-//}
 - (NSArray *)titles{
-    return @[@"App订单",@"团购订单"];
+    return @[@"App订单",@"团购订单",@"卡订单"];
 }
+
 - (WMSegmentStyle *)style{
     if (_style == nil) {
         _style = [[WMSegmentStyle alloc] init];
         _style.normalTitleColor = [UIColor whiteColor];
         _style.selectedTitleColor = [UIColor darkTextColor];
+        _style.normalBgColor = [UIColor darkTextColor];
         _style.selectedBgColor = [UIColor whiteColor];
-        _style.borderRadius = 8.0;
-        _style.borderColor = [UIColor darkTextColor];
+//        _style.borderRadius = 8.0;
+//        _style.borderColor = [UIColor darkTextColor];
         _style.showMoveLine = NO;
         _style.allowShowBottomLine = NO;
+        _style.customSegmentSuperView = YES;
+        _style.segmentHeight = 35;
     }
     return _style;
 }
-- (WMSegmentView *)segmentView{
-    if (_segmentView == nil){
-        _segmentView = [[WMSegmentView alloc] init];
-        _segmentView.layer.cornerRadius = 8;
-        _segmentView.layer.masksToBounds = YES;
-        _segmentView.backgroundColor = [UIColor lightGrayColor];
-        _segmentView.delegate = self;
+- (WMScrollPageView *)pageView {
+    if (_pageView == nil) {
+        _pageView = [[WMScrollPageView alloc] initWithSegmentStyle:self.style parentVC:self];
+        _pageView.dataSource = self;
+        _pageView.delegate = self;
     }
-    return _segmentView;
+    return _pageView;
 }
 - (void)viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
-    self.segmentView.frame = CGRectMake(0, 0, 150, 35);
+    self.pageView.frame = CGRectMake(0, 88, self.view.bounds.size.width, self.view.bounds.size.height - 88);
+    self.segmentView.frame = CGRectMake(0, 0, 250, self.style.segmentHeight);
 }
 
 @end

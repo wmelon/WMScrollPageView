@@ -46,7 +46,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     cell.backgroundColor = [UIColor redColor];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@  HI   %ld" , self.title , indexPath.row];
+    cell.textLabel.text = [NSString stringWithFormat:@"%ld  HI   %ld" , self.index , indexPath.row];
     
     return cell;
 }

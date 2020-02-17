@@ -8,7 +8,6 @@
 
 #import "WMScrollPageView.h"
 #import "WMContentView.h"
-#import "WMSegmentView.h"
 #import "WMStretchableTableHeaderView.h"
 
 /// 屏幕宽度
@@ -35,8 +34,6 @@
 @property (nonatomic ,strong) WMSegmentStyle *segmentStyle;
 /// 当前外层滚动视图
 @property (nonatomic ,strong) WMManyGesturesTableView *tableView;
-/// 分页导航视图
-@property (nonatomic ,strong) WMSegmentView *segmentView;
 /// 内部分页视图容器
 @property (nonatomic ,strong) WMContentView * contentView;
 /// 当前视图所在的控制器
@@ -60,6 +57,8 @@
 - (NSInteger)wm_defaultSelectedPage;
 @end
 @implementation WMScrollPageView
+/// 分页导航视图
+@synthesize segmentView = _segmentView;
 
 - (instancetype)initWithSegmentStyle:(WMSegmentStyle *)segmentStyle parentVC:(UIViewController *)parentVC{
     if (self = [super init]){
@@ -199,18 +198,27 @@
     if (self.segmentStyle.isShowNavigationBar){
         naviBarAndTabBArHeight = kScrollPageNavBarHeight - self.frame.origin.y;
     }
-    CGFloat height = self.frame.size.height - naviBarAndTabBArHeight - self.segmentStyle.segmentHeight;
+    CGFloat height = self.frame.size.height - naviBarAndTabBArHeight;
+    if (self.segmentStyle.customSegmentSuperView == NO) {
+        height -= CGRectGetHeight(self.segmentView.frame);
+    }
     if (height <= 0){
         height = 0;
     }
     return height;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    return self.segmentView;
+    if (self.segmentStyle.customSegmentSuperView == NO) {
+        return self.segmentView;
+    }
+    return [UIView new];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    //sectionheader的高度，这是要放分段控件的
-    return self.segmentStyle.segmentHeight;
+    if (self.segmentStyle.customSegmentSuperView == NO) {
+        //sectionheader的高度，这是要放分段控件的
+        return CGRectGetHeight(self.segmentView.frame);
+    }
+    return 0.0001;
 }
 
 #pragma mark -- WMSegmentViewDelegate
@@ -348,7 +356,9 @@
     [super layoutSubviews];
     self.tableView.frame = self.bounds;
     [self wm_configTableViewHeaderView];
-    self.segmentView.frame = CGRectMake(0, self.tableViewHeaderViewHeight, self.frame.size.width, self.segmentStyle.segmentHeight);
+    if (self.segmentStyle.customSegmentSuperView == NO){
+        self.segmentView.frame = CGRectMake(0, self.tableViewHeaderViewHeight, self.frame.size.width, self.segmentStyle.segmentHeight);
+    }
 }
 - (void)dealloc {
     NSLog(@"dealloc ---- %@",self);

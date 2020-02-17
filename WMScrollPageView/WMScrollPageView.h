@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "WMSegmentStyle.h"
+#import "WMSegmentView.h"
 
 @class WMScrollPageView ;
 
@@ -42,8 +43,34 @@
 @end
 
 @interface WMScrollPageView : UIView
-@property (nonatomic , assign) id<WMScrollPageViewDataSource> dataSource;
-@property (nonatomic , assign) id<WMScrollPageViewDelegate> delegate;
+
+/**
+ 滚动视图数据源代理
+ */
+@property (nonatomic, assign) id<WMScrollPageViewDataSource> dataSource;
+
+/**
+ 滚动视图代理
+ */
+@property (nonatomic, assign) id<WMScrollPageViewDelegate> delegate;
+
+/**
+ 分页导航控制器
+ */
+@property (nonatomic, strong, readonly) WMSegmentView *segmentView;
+
+/**
+ 初始化滚动视图
+
+ @param segmentStyle 滚动视图导航条显示样式
+ @param parentVC 显示在父视图
+ @return 当前滚动视图
+ */
 - (instancetype)initWithSegmentStyle:(WMSegmentStyle *)segmentStyle parentVC:(UIViewController *)parentVC;
+
+/**
+ 刷新滚动视图
+ */
 - (void)reloadScrollPageView;
+
 @end
