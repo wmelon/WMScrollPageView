@@ -240,6 +240,7 @@
 }
 - (void)segmentView:(WMSegmentView *)segmentView didSelectIndex:(NSInteger)index{
     [self.contentView wm_changePageWithIndex:index];
+    [self pageViewCurrentIndex:index];
 }
 /// 右边添加按钮点击事件
 - (void)plusButtonClickAtBarItem:(WMSegmentView *)segmentView{
@@ -288,10 +289,16 @@
 /// 分页控制器滚动进度监听
 - (void)contentView:(WMContentView *)contentView adjustUIWithProgress:(CGFloat)progress currentIndex:(NSInteger)currentIndex{
     [self.segmentView adjustUIWithProgress:progress currentIndex:currentIndex];
+    [self pageViewCurrentIndex:currentIndex];
 }
 /// 停止滚动
 - (void)stopScrollAnimatingAtContentView:(WMContentView *)contentView{
     [self.segmentView wm_scrollViewDidEndDecelerating];
+}
+- (void)pageViewCurrentIndex:(NSInteger)currentIndex {
+    if ([self.delegate respondsToSelector:@selector(scrollPageView:currentIndex:)]){
+        [self.delegate scrollPageView:self currentIndex:currentIndex];
+    }
 }
 #pragma mark -- scrollView KVO
 - (void)addScrollViewKVO:(UIScrollView *)scrollerView{

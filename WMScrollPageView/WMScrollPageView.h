@@ -40,6 +40,9 @@
 /// 右边添加按钮点击事件
 - (void)plusButtonClickAtScrollPageView:(WMScrollPageView *)scrollPageView;
 
+// 当前选择页码
+- (void)scrollPageView:(WMScrollPageView *)scrollPageView currentIndex:(NSInteger)currentIndex;
+
 @end
 
 @interface WMScrollPageView : UIView
@@ -61,7 +64,7 @@
 
 /**
  初始化滚动视图
-
+ 
  @param segmentStyle 滚动视图导航条显示样式
  @param parentVC 显示在父视图
  @return 当前滚动视图
