@@ -216,7 +216,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (self.segmentStyle.customSegmentSuperView == NO) {
         //sectionheader的高度，这是要放分段控件的
-        return CGRectGetHeight(self.segmentView.frame);
+        return self.segmentStyle.segmentHeight;
     }
     return 0.0001;
 }

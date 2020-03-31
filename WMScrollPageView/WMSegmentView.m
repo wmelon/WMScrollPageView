@@ -286,7 +286,7 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
     return array;
 }
 - (void)wm_adjustTitleOffSet:(NSInteger)toIndex{
-    if (toIndex < self.itemsArray.count){
+    if (toIndex < self.itemsArray.count && self.scrollerView.contentSize.width > 0){
         UIButton *toButton = self.itemsArray[toIndex];
         CGFloat offX = CGRectGetMidX(toButton.frame) - self.scrollerView.frame.size.width/2.0;
         if (offX <= 0){
@@ -549,8 +549,9 @@ typedef NS_ENUM(NSInteger , wm_titleColorType) {
     if (maxContentWidth <= self.frame.size.width){
         maxContentWidth = self.frame.size.width;
     }
-    self.scrollerView.contentSize = CGSizeMake(maxContentWidth, 0);
+    self.scrollerView.contentSize = CGSizeMake(maxContentWidth, selfHeight);
     self.scrollerView.frame = self.bounds;
+    self.scrollerView.contentOffset = CGPointMake(self.scrollerView.contentOffset.x, 0);
     CGFloat bottomLineHeight = self.segmentStyle.bottomLineHeight;
     self.bottomLine.frame = CGRectMake(0, selfHeight - bottomLineHeight, selfWidth, bottomLineHeight);
     self.plusButton.frame = CGRectMake(selfWidth - selfHeight, 0, selfHeight, selfHeight - CGRectGetHeight(self.bottomLine.frame));
