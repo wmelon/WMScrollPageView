@@ -7,12 +7,23 @@
 //
 
 #import "WMContentView.h"
+@interface WMManyGesturesCollectionView : UICollectionView<UIGestureRecognizerDelegate>
+@end
 
+@implementation WMManyGesturesCollectionView
+//允许同时识别多个手势
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if (self.contentOffset.x <= 0) {
+        return YES;
+    }
+    return NO;
+}
+@end
 @interface WMContentView()<UIGestureRecognizerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 /// 显示的子控制器数组
 @property (nonatomic , strong) NSArray *showViewControllers;
 /// 控制子控制器水平方向滚动视图
-@property (nonatomic , strong) UICollectionView *collectionView;
+@property (nonatomic , strong) WMManyGesturesCollectionView *collectionView;
 /// 当前选中页码
 @property (nonatomic , assign) NSInteger selectedIndex;
 /// 是否正在翻页
@@ -184,7 +195,8 @@
         layout.minimumLineSpacing = 0;
         layout.minimumInteritemSpacing = 0;
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        _collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:layout];
+        _collectionView = [[WMManyGesturesCollectionView alloc] initWithFrame:self.bounds collectionViewLayout:layout];
+        _collectionView.bounces = NO;
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.backgroundColor = [UIColor whiteColor];

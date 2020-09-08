@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
     s.name = 'WMScrollPageView'
-    s.version = '1.5.0'
+    s.version = '1.5.1'
     s.license = 'MIT'
     s.summary = '这是一个分页导航视图控件'
     s.homepage = 'https://github.com/wmelon/WMScrollPageView.git'
