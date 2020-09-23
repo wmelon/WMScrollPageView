@@ -13,6 +13,9 @@
 @implementation WMManyGesturesCollectionView
 //允许同时识别多个手势
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if ([otherGestureRecognizer.view isKindOfClass:[UIScrollView class]]) {
+        return NO;
+    }
     if (self.contentOffset.x <= 0) {
         return YES;
     }
